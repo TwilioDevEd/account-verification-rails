@@ -1,0 +1,23 @@
+{
+  "name": "Two Factor Authy",
+  "description": "Two Factor Authentication in Rails with Authy",
+  "repository": "https://github.com/TwilioDevEd/authy2fa-rails",
+  "keywords": [
+    "security", "2fa", "twilio"
+  ],
+  "addons": ["heroku-postgresql:hobby-dev"],
+  "env": {
+    "AUTHY_KEY": {
+      "description": "Your Authy API key",
+      "value": "5",
+      "required": true
+    },
+    "SECRET_KEY_BASE": {
+      "description": "Your Rails session secret key",
+      "generator": "secret"
+    }
+  },
+  "scripts": {
+    "postdeploy": "bundle exec rake db:create db:migrate"
+  }
+}
