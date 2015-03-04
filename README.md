@@ -1,6 +1,6 @@
-# Two Factor Authy
+# Account Verification
 
-Use Authy to add Two Factor Auth to your Rails app.
+Use Authy and Twilio to verify your user's account.
 
 ## Running the application
 
@@ -9,7 +9,7 @@ Clone this repository and cd into the directory then.
 ```
 $ bundle install
 $ rake db:create db:migrate
-$ export AUTHY_KEY=YOUR_AUTHY_KEY
+$ export AUTHY_API_KEY=YOUR_AUTHY_KEY
 $ rake test
 $ rails server
 ```
