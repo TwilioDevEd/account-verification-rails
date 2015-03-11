@@ -9,7 +9,10 @@ Clone this repository and cd into the directory then.
 ```
 $ bundle install
 $ rake db:create db:migrate
-$ export AUTHY_API_KEY=YOUR_AUTHY_KEY
+$ export AUTHY_API_KEY=your authy key
+$ export TWILIO_ACCOUNT_SID=your account sid
+$ export TWILIO_AUTH_TOKEN=your auth token
+$ export TWILIO_NUMBER=+16515559999
 $ rake test
 $ rails server
 ```
