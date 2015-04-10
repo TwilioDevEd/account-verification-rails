@@ -2,6 +2,7 @@
   "name": "Account Verification",
   "description": "Account Verification in Rails with Twilio and Authy",
   "repository": "https://github.com/TwilioDevEd/account-verification-rails",
+  "success_url": "/landing.html",
   "keywords": [
     "security", "phone", "twilio", "authy", "account verification", "security", "data"
   ],
