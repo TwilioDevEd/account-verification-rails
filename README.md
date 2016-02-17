@@ -2,6 +2,8 @@
 
 Use Authy and Twilio to verify your user's account.
 
+[Read the full tutorial here](https://www.twilio.com/docs/tutorials/walkthrough/account-verification/ruby/rails)!
+
 ## Running the application
 
 Clone this repository and cd into the directory then.
