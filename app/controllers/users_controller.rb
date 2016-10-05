@@ -58,7 +58,7 @@ class UsersController < ApplicationController
   def resend
     @user = current_user
     Authy::API.request_sms(id: @user.authy_id)
-    flash[:notice] = "Verification code re-sent"
+    flash[:notice] = 'Verification code re-sent'
     redirect_to verify_path
   end
 
@@ -68,10 +68,10 @@ class UsersController < ApplicationController
     @user = current_user
     twilio_number = ENV['TWILIO_NUMBER']
     @client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN']
-    message = @client.account.messages.create(
-      :from => twilio_number,
-      :to => @user.country_code+@user.phone_number,
-      :body => message
+    message = @client.messages.create(
+      from: twilio_number,
+      to:   "+#{@user.country_code}#{@user.phone_number}",
+      body: message
     )
     puts message.to
   end
@@ -81,5 +81,4 @@ class UsersController < ApplicationController
       :email, :password, :name, :country_code, :phone_number
     )
   end
-
 end
