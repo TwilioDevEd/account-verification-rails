@@ -61,7 +61,7 @@ class UsersController < ApplicationController
     flash[:notice] = "Verification code re-sent"
     redirect_to verify_path
   end
-  
+
   private
 
   def send_message(message)
