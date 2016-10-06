@@ -1,0 +1,43 @@
+.step(data-title='Verify the One-Time Password', data-file="app/views/users/show_verify.html.erb", data-language='htmlembedded')
+  h2 User Story: Verify the One-Time Password
+  blockquote As a user, I want to enter the one-time password sent to my mobile phone from the authentication system before I complete the signup process.</blockquote>
+  :markdown
+    This story covers the next user-facing step of the verification process, where they enter the code we sent them to verify their possession of the phone number they gave us. Here's what needs to get done to complete this story:
+
+    * Create a form to allow the user to enter the one-time password they were sent
+    * Create routes and controllers to both display the form and handle the submission of the one-time password
+
+    The route definition in `config/routes.rb` is pretty straight-forward, so we'll skip that bit here. Let's begin instead with the verification form, which is created with the Jade code you see here.
+
+.step(data-title="The Verification Form", data-file="app/views/users/show_verify.html.erb", data-highlight="7-13", data-language='htmlembedded')
+  :markdown
+    ## The Verification Form
+
+    This page actually has two forms, but we'll focus on the first one first. It has only a single field for the verification code, which we'll submit to the server for validation.
+
+.step(data-title='Verifying the Code: Controller', data-file='app/controllers/users_controller.rb', data-highlight='37-56')
+  :markdown
+    ## Verifying the Code: Controller
+
+    This controller function handles the form submission. It needs to:
+
+    * Get the current user 
+    * Verify the code that was entered by the user
+    * If the code entered was valid, flip a boolean flag on the user model to indicate the account was verified
+
+    ## Verifying the Code
+
+    Authy provides us with a `verify` method that allows us to pass a user id, a token and a callback function if we'd like. In this case we just need to check that the API request was successful and if so set `user.verified` to true. 
+
+    That's all for this story! However, our verification form wouldn't be very usable if there wasn't a way to resend a verification code if the message didn't arrive at the end user's handset for whatever reason.
+
+
+.step(data-title='Re-sending The Code', data-file='app/controllers/users_controller.rb', data-highlight='58-63')
+  :markdown
+    ## Re-sending the Code
+
+    Since the form for re-sending the code is one line (see `show_verify.html.erb`) we're going to skip that for this tutorial. Let's just look at the controller function.
+
+    This controller loads the `User` model associated with the request and then uses the same Authy API method we used earlier to resend the code. Pretty straightforward!
+
+    To wrap things up, let's implement our last user story where we confirm for the user that their account has been verified with a text message and a success page.

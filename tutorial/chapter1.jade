@@ -1,0 +1,100 @@
+.step(data-title='Introduction')
+  :markdown
+    ## User Account Verification
+
+    Ready to implement user account verification in your application? Here's how it works at a high level:
+
+    1. The user begins the registration process by entering their data, including a phone number, into a signup form
+
+    1. The authentication system sends a one-time password to the user's mobile phone to verify their possession of that phone number
+
+    1. The user enters the one-time password into a form before completing registeration
+
+    1. The user sees a success page and receives an SMS indicating that their account has been created
+
+    ## Building Blocks
+
+    To get this done, you'll be working with the following Twilio-powered APIs:
+
+    **Authy REST API**
+
+    * [Users Resource](https://docs.authy.com/#section-Enabling_two-factor_on_a_user): You will need to create Authy users to send and verify one-time passwords with them.
+    * [SMS Resource](https://docs.authy.com/#section-Text_Messages): We will ask Authy to send one-time passwords to our user via SMS
+    * [Verify Resource](https://docs.authy.com/#section-Verifying_a_token): Used to verify tokens entered by the user in our web form during registration
+
+    **Twilio REST API**
+    * [Messages Resource](/docs/api/rest/sending-sms): We will use Twilio directly to send our user a confirmation message after they create an account
+
+    Let's get started! Click the right arrow to move on to the next step of the tutorial.
+
+.step(data-title="About This Tutorial")
+  :markdown
+    ## About This Tutorial
+
+    In this tutorial, we will be working through a series of [user stories](http://en.wikipedia.org/wiki/User_story) that describe how to fully implement account verification in a web application. Our team implemented this example application in about 12 story points (roughly equivalent to 12 working hours).
+
+    Let's get started with our first user story around creating a new user account.
+
+
+.step(data-title='The User Story')
+  h2 The User Story
+  blockquote As a user, I want to register for a new user account with my e-mail, full name, mobile phone number, and a password.
+  
+  :markdown
+    To do account verification, you definitely need to start with an account! This story requires that we create a bit of UI and a model object to create and save a new `User` in our system. At a high level, here's what we will need to add:
+
+    * A form to enter details about the new user 
+    * A route and controller function on the server to render the form 
+    * A route and controller function on the server to handle the form POST request
+    * A persistent `User` model object to store information about the user 
+
+    Let's start by looking at the model, where we decide what information we want to store about our user.
+
+
+.step(data-title='User Model', data-file='app/models/user.rb')
+  :markdown
+    ## The User Model
+
+    The User Model for this use-case is pretty straight-forward and Rails offers us some tools to make it even simpler. If you have already read through the [2FA tutorial](/docs/howto/walkthrough/two-factor-authentication) this probably looks very similar. Let's start by defining our model and validating it.
+
+    First we need to create the ActiveRecord object, which creates the model in the related Postgres table and tells our app how to validate the model's data.
+
+    *Data Validation*
+
+    Validations are important since we want to make sure only accurate data is being saved into our datbase. In this case we only want to validate that all of our required fields are present. We can do this by creating a `validates` statement with `presence: true`.
+
+    *Passwords*
+
+    In Rails creating a secure password hash is as simple as calling `has_secure_password`. This created a hash that protects our user's passwords on the database.
+
+    One note: in order to run this demo you would need to run `rake db:migrate` which would run the migrations in our db/migrate folder. For this tutorial we're gonna focus on the verification steps but if you want to learn more about migrations you can read the [Rails guide](http://edgeguides.rubyonrails.org/active_record_migrations.html) on the subject.
+
+    Now we're ready to move up to the controller level of the application, starting with the HTTP request routes we'll need.
+
+.step(data-title='Adding Routes', data-file='config/routes.rb')
+  :markdown
+    ## Adding New Routes
+
+    In a [Rails](http://rubyonrails.org/) application, there is something called [Resource Routing](http://guides.rubyonrails.org/routing.html#resource-routing-the-rails-default) which automatically maps a resources CRUD capabilities to it's controller. Since our User is an ActiveRecord resource, we can tell Rails that we want to use some of these routes, which will save us some lines of code.
+
+    This means that in this one line of code we automatically have a 'user/new' route which will automatically render our 'user/new.html.erb' file. Let's take a look at this form up close.
+
+.step(data-title='New User Form', data-file='app/views/users/new.html.erb', data-language='htmlembedded')
+  :markdown
+    ## New User Form
+
+    When we create a new user, we ask for a name, e-mail address, and a password. In order to validate their account, we also ask them for a mobile number with a country code, which we can use with Authy to send them one-time passwords via SMS.
+
+    By using the rails `form_for` tag we can bind the form to the model object. This will generate the necessary html markup that will create a new User on submit.
+
+    Let's jump back over to the controller to see what happens when we create a user.
+    
+.step(data-title='Handling the Form POST', data-file='app/controllers/users_controller.rb', data-highlight='10-23')
+  :markdown
+    ## Handling the Form POST
+
+    One of the other handy controllers created by our `User` resource route was 'user/create' which handles the POST from our form.
+
+    In our controller we take the input from our form and create a new `User` model. If the user is saved to the database successfully, we use the Authy gem to create a corresponding Authy User and save the ID for that user in our database.
+
+    Now we have a user that has registered, but is not verified. In order to view anything else on the site they need to verify they own the phone number they submitted by entering a token we send to their phone. Time to take a look at how we would send this token.
