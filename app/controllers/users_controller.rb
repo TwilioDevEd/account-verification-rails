@@ -73,7 +73,6 @@ class UsersController < ApplicationController
       to:   "+#{@user.country_code}#{@user.phone_number}",
       body: message
     )
-    puts message.to
   end
 
   def user_params
