@@ -62,7 +62,7 @@ This project is built using [Ruby on Rails](http://rubyonrails.org/) Framework.
    $ bundle exec rails s
    ```
 
-1. Check it out at http://localhost:3000.
+1. Check it out at [http://localhost:3000](http://localhost:3000).
 
 ## Meta
 
