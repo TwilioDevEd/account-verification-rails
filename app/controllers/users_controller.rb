@@ -67,11 +67,12 @@ class UsersController < ApplicationController
   def send_message(message)
     @user = current_user
     twilio_number = ENV['TWILIO_NUMBER']
-    @client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN']
-    message = @client.messages.create(
-      from: twilio_number,
-      to:   "+#{@user.country_code}#{@user.phone_number}",
-      body: message
+    account_sid = ENV['TWILIO_ACCOUNT_SID']
+    @client = Twilio::REST::Client.new account_sid, ENV['TWILIO_AUTH_TOKEN']
+    message = @client.api.accounts(account_sid).messages.create(
+      :from => twilio_number,
+      :to => @user.country_code+@user.phone_number,
+      :body => message
     )
   end
 
