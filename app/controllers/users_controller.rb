@@ -61,14 +61,15 @@ class UsersController < ApplicationController
     flash[:notice] = "Verification code re-sent"
     redirect_to verify_path
   end
-  
+
   private
 
   def send_message(message)
     @user = current_user
     twilio_number = ENV['TWILIO_NUMBER']
-    @client = Twilio::REST::Client.new ENV['TWILIO_ACCOUNT_SID'], ENV['TWILIO_AUTH_TOKEN']
-    message = @client.account.messages.create(
+    account_sid = ENV['TWILIO_ACCOUNT_SID']
+    @client = Twilio::REST::Client.new account_sid, ENV['TWILIO_AUTH_TOKEN']
+    message = @client.api.accounts(account_sid).messages.create(
       :from => twilio_number,
       :to => @user.country_code+@user.phone_number,
       :body => message
