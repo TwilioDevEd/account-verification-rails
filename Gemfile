@@ -30,7 +30,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'authy'
 
 # Use Twilio to send confirmation message
-gem 'twilio-ruby', '~>5.0.0.rc26'
+gem 'twilio-ruby', '~>5.0.0'
 
 # Use Unicorn as the app server
 gem 'unicorn'
