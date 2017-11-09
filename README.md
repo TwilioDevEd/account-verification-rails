@@ -12,12 +12,6 @@ living, breathing human beings.
 
 [Read the full tutorial here!](https://www.twilio.com/docs/tutorials/walkthrough/account-verification/ruby/rails)
 
-## Fastest Deploy
-
-Use Heroku to deploy this app immediately:
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/TwilioDevEd/account-verification-rails)
-
 ## Local development
 
 This project is built using [Ruby on Rails](http://rubyonrails.org/) Framework.
