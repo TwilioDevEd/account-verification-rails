@@ -39,7 +39,7 @@ GEM
     arel (6.0.4)
     authy (2.7.1)
       httpclient (>= 2.5.3.3)
-    bcrypt (3.1.11)
+    bcrypt (3.1.15)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.3)
@@ -171,7 +171,7 @@ PLATFORMS
 
 DEPENDENCIES
   authy
-  bcrypt (~> 3.1.7)
+  bcrypt (~> 3.1.15)
   byebug
   coffee-rails (~> 4.1.0)
   jbuilder (~> 2.0)
