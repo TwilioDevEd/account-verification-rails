@@ -14,7 +14,7 @@ class UsersControllerTest < ActionController::TestCase
     Authy::API.expects(:register_user).
       with(authy_params(user_params)).once.returns(authy)
     assert_difference "User.count" do
-      post :create, user: user_params
+      post :create, params: { user: user_params }
       assert_response :redirect
       # TODO: Uncomment this assertion once this path will be added.
       # assert_redirected_to account_path
@@ -24,7 +24,7 @@ class UsersControllerTest < ActionController::TestCase
   test "should post unsuccessfully to create" do
     Authy::API.expects(:register_user).never
     assert_no_difference "User.count" do
-      post :create, user: user_params(email: "blah")
+      post :create, params: { user: user_params(email: "blah") }
       assert_response :success
       assert_template :new
       assert assigns(:user)
